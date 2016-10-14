@@ -375,7 +375,7 @@ var rekapiCore = function (root, _, Tweenable) {
     }
 
     // You can't add an actor more than once.
-    if (!_.contains(this._actors, rekapiActor)) {
+    if (!_.includes(this._actors, rekapiActor)) {
       if (typeof rekapiActor.context === 'undefined') {
         rekapiActor.context = this.context;
       }
@@ -2608,7 +2608,7 @@ rekapiModules.push(function (context) {
    * @return {boolean}
    */
   function isTransformFunction (name) {
-    return _.contains(transformFunctions, name);
+    return _.includes(transformFunctions, name);
   }
 
   /*!
