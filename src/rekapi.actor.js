@@ -366,12 +366,13 @@ rekapiModules.push(function (context) {
     var newKeyframeProperty;
 
     // Create and add all of the KeyframeProperties
+    var self = this;
     _.each(state, function (value, name) {
       newKeyframeProperty = new Rekapi.KeyframeProperty(
         millisecond, name, value, easing[name]);
 
-      this.addKeyframeProperty(newKeyframeProperty);
-    }, this);
+      self.addKeyframeProperty(newKeyframeProperty);
+    });
 
     if (this.rekapi) {
       invalidateAnimationLength(this.rekapi);
@@ -444,15 +445,16 @@ rekapiModules.push(function (context) {
     var sourcePositions = {};
     var sourceEasings = {};
 
+    var self = this;
     _.each(this._propertyTracks, function (propertyTrack, trackName) {
       var keyframeProperty =
-      this.getKeyframeProperty(trackName, copyFrom);
+      self.getKeyframeProperty(trackName, copyFrom);
 
       if (keyframeProperty) {
         sourcePositions[trackName] = keyframeProperty.value;
         sourceEasings[trackName] = keyframeProperty.easing;
       }
-    }, this);
+    });
 
     this.keyframe(copyTo, sourcePositions, sourceEasings);
     return this;
@@ -487,7 +489,7 @@ rekapiModules.push(function (context) {
         var property = propertyTrack[oldIndex];
         property.millisecond = to;
       }
-    }, this);
+    });
 
     cleanupAfterKeyframeModification(this);
 
@@ -530,8 +532,9 @@ rekapiModules.push(function (context) {
     millisecond, stateModification, opt_easingModification) {
     opt_easingModification = opt_easingModification || {};
 
+    var self = this;
     _.each(this._propertyTracks, function (propertyTrack, trackName) {
-      var property = this.getKeyframeProperty(trackName, millisecond);
+      var property = self.getKeyframeProperty(trackName, millisecond);
 
       if (property) {
         property.modifyWith({
@@ -544,9 +547,9 @@ rekapiModules.push(function (context) {
           stateModification[trackName],
           opt_easingModification[trackName]);
 
-        this.addKeyframeProperty(property);
+        self.addKeyframeProperty(property);
       }
-    }, this);
+    });
 
     cleanupAfterKeyframeModification(this);
 
@@ -564,16 +567,16 @@ rekapiModules.push(function (context) {
    * @chainable
    */
   Actor.prototype.removeKeyframe = function (millisecond) {
-    var propertyTracks = this._propertyTracks;
+    var self = this;
 
     _.each(this._propertyTracks, function (propertyTrack, propertyName) {
       var index = propertyIndexInTrack(propertyTrack, millisecond);
       if (typeof index !== 'undefined') {
         var keyframeProperty = propertyTrack[index];
-        this._deleteKeyframePropertyAt(propertyTrack, index);
+        self._deleteKeyframePropertyAt(propertyTrack, index);
         keyframeProperty.detach();
       }
-    }, this);
+    });
 
     removeEmptyPropertyTracks(this);
     cleanupAfterKeyframeModification(this);
@@ -603,7 +606,7 @@ rekapiModules.push(function (context) {
 
     _.each(this._keyframeProperties, function (keyframeProperty) {
       keyframeProperty.detach();
-    }, this);
+    });
 
     removeEmptyPropertyTracks(this);
     this._keyframeProperties = {};
@@ -788,7 +791,7 @@ rekapiModules.push(function (context) {
           latest = trackLength;
         }
       }
-    }, this);
+    });
 
     return latest;
   };
@@ -982,14 +985,15 @@ rekapiModules.push(function (context) {
 
           interpolatedObject[propName] = keyframeProperty.value;
         }
-      }, this);
+      });
 
     } else {
 
+      var self = this;
       _.each(propertiesToInterpolate, function (keyframeProperty, propName) {
         if (propName !== '_millisecond') {
-          if (this._beforeKeyframePropertyInterpolate !== noop) {
-            this._beforeKeyframePropertyInterpolate(keyframeProperty);
+          if (self._beforeKeyframePropertyInterpolate !== noop) {
+            self._beforeKeyframePropertyInterpolate(keyframeProperty);
           }
 
           if (keyframeProperty.shouldInvokeForMillisecond(millisecond)) {
@@ -1000,12 +1004,12 @@ rekapiModules.push(function (context) {
           interpolatedObject[propName] =
           keyframeProperty.getValueAt(millisecond);
 
-          if (this._afterKeyframePropertyInterpolate !== noop) {
-            this._afterKeyframePropertyInterpolate(
+          if (self._afterKeyframePropertyInterpolate !== noop) {
+            self._afterKeyframePropertyInterpolate(
               keyframeProperty, interpolatedObject);
           }
         }
-      }, this);
+      });
     }
 
     this.set(interpolatedObject);
@@ -1080,13 +1084,14 @@ rekapiModules.push(function (context) {
    * "Rekapi.Actor/exportTimeline:method"}}{{/crossLink}}`.
    */
   Actor.prototype.importTimeline = function (actorData) {
+    var self = this;
     _.each(actorData.propertyTracks, function (propertyTrack) {
       _.each(propertyTrack, function (property) {
         var obj = {};
         obj[property.name] = property.value;
-        this.keyframe(property.millisecond, obj, property.easing);
-      }, this);
-    }, this);
+        self.keyframe(property.millisecond, obj, property.easing);
+      });
+    });
   };
 
 });

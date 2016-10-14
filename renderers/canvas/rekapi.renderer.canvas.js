@@ -48,7 +48,7 @@ rekapiModules.push(function (context) {
     if (renderOrderSorter) {
       var orderedActors =
           _.sortBy(canvasRenderer._canvasActors, renderOrderSorter);
-      renderOrder = _.pluck(orderedActors, 'id');
+      renderOrder = _.map(orderedActors, 'id');
     } else {
       renderOrder = canvasRenderer._renderOrder;
     }

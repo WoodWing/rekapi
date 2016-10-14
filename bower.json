@@ -15,8 +15,7 @@
   ],
   "dependencies": {
     "shifty": "1.5.0",
-    "underscore": "1.5.2",
-    "lodash": "~2.4.1"
+    "lodash": "^4.0"
   },
   "devDependencies": {
     "qunit": "1.11.0",

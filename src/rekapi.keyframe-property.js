@@ -48,11 +48,12 @@ rekapiModules.push(function (context) {
    */
   KeyframeProperty.prototype.modifyWith = function (newProperties) {
     var modifiedProperties = {};
+    var self = this;
 
     _.each(['millisecond', 'easing', 'value'], function (str) {
       modifiedProperties[str] = typeof(newProperties[str]) === 'undefined' ?
-          this[str] : newProperties[str];
-    }, this);
+          self[str] : newProperties[str];
+    });
 
     _.extend(this, modifiedProperties);
   };

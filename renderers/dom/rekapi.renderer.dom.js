@@ -1062,7 +1062,7 @@ rekapiModules.push(function (context) {
     var keyframeProperties = actor._keyframeProperties;
     var propertyNames = _.keys(actor._propertyTracks);
 
-    return _.any(keyframeProperties, canOptimizeKeyframeProperty) &&
+    return _.some(keyframeProperties, canOptimizeKeyframeProperty) &&
       !_.intersection(propertyNames, transformFunctions).length;
   }
 

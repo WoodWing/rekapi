@@ -142,7 +142,7 @@ var rekapiCore = function (root, _, Tweenable) {
       // Reset function keyframes
       var lookupObject = { name: 'function' };
       _.each(rekapi._actors, function (actor) {
-        var fnKeyframes = _.where(actor._keyframeProperties, lookupObject);
+        var fnKeyframes = _.filter(actor._keyframeProperties, lookupObject);
 
         var lastFnKeyframe = _.last(fnKeyframes);
 
@@ -318,9 +318,10 @@ var rekapiCore = function (root, _, Tweenable) {
       updateToCurrentMillisecond(this);
     }, this);
 
+    var self = this;
     _.each(Rekapi._rendererInitHook, function (rendererInitHook) {
-      rendererInitHook(this);
-    }, this);
+      rendererInitHook(self);
+    });
 
     return this;
   }
@@ -394,7 +395,7 @@ var rekapiCore = function (root, _, Tweenable) {
    * @return {Array(number)}
    */
   Rekapi.prototype.getActorIds = function () {
-    return _.pluck(this._actors, 'id');
+    return _.map(this._actors, 'id');
   };
 
   /**
@@ -771,7 +772,7 @@ var rekapiCore = function (root, _, Tweenable) {
 
     _.each(this._actors, function (actor) {
       exportData.actors.push(actor.exportTimeline());
-    }, this);
+    });
 
     var curves = {};
     _.chain(Tweenable.prototype.formula)
@@ -812,11 +813,12 @@ var rekapiCore = function (root, _, Tweenable) {
       );
     });
 
+    var self = this;
     _.each(rekapiData.actors, function (actorData) {
       var actor = new Rekapi.Actor();
       actor.importTimeline(actorData);
-      this.addActor(actor);
-    }, this);
+      self.addActor(actor);
+    });
   };
 
   /**
