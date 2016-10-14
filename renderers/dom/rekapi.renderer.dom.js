@@ -147,7 +147,7 @@ rekapiModules.push(function (context) {
    * @return {boolean}
    */
   function isTransformFunction (name) {
-    return _.contains(transformFunctions, name);
+    return _.includes(transformFunctions, name);
   }
 
   /*!
