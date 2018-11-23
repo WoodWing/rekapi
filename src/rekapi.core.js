@@ -180,7 +180,7 @@ var rekapiCore = function (root, _, Tweenable) {
   function tick (rekapi) {
     // Need to check for .call presence to get around an IE limitation.  See
     // annotation for cancelLoop for more info.
-    if (rekapi._scheduleUpdate.call) {
+    if (rekapi._scheduleUpdate && rekapi._scheduleUpdate.call) {
       rekapi._loopId = rekapi._scheduleUpdate.call(global,
         rekapi._updateFn, UPDATE_TIME);
     } else {
@@ -223,7 +223,7 @@ var rekapiCore = function (root, _, Tweenable) {
    * @param {Rekapi} rekapi
    */
   function cancelLoop (rekapi) {
-    if (rekapi._cancelUpdate.call) {
+    if (rekapi._cancelUpdate && rekapi._cancelUpdate.call) {
       rekapi._cancelUpdate.call(global, rekapi._loopId);
     } else {
       clearTimeout(rekapi._loopId);
